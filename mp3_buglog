@@ -1,0 +1,408 @@
+<=========================================================>
+<=================>    BUG LOG HEADER   <=================>
+<=========================================================>
+Assignment:
+    MP3
+CheckPoint:
+    CP1
+CreateTime:
+    2022.10.15
+Members: Zhenyu Zhang, Zhuohao Li, Weijie Liang, Benlu Wang
+
+
+<--------------------------------------------------------->
+                          BUG 1                          
+<--------------------------------------------------------->
+Time:
+    2022.10.15.
+Creator:
+    Benlu Wang.
+Description:
+    RTC does not work. Nothing was printed on screen after calling the gievn test_interrupt func
+Solution:
+    Since I only use one func in the RTC part "rtc_init". So I examine the function carefully and after 
+    comparing it with the code on Wikipedia, I found the issue. At the beginning, I need to select RTC
+    register B and mask NMI. I process them step by step by using "outb(0x70, 0x80)" and 
+    "outb(0x70 | 0xB)". Soon I found the second command would overwrite the first one and finally fails.
+    So I change the word to "outb(0x70, 0x8B)".
+
+    This is an arithmetical error and it takes me an hour to find and fix it
+
+
+<--------------------------------------------------------->
+                          BUG 2                          
+<--------------------------------------------------------->
+Time:
+    2022.10.15.
+Creator:
+    Weijie Liang.
+Description:
+    When keyboard's interrupt is enabled, it can only interrupt for a time and then the system halt.
+Solution:
+    There's some error when recovering from interrupt. We push a digit but forget to pop it out. 
+
+<--------------------------------------------------------->
+                          BUG 3                          
+<--------------------------------------------------------->
+Time:
+    2022.10.16.
+Creator:
+    Benlu Wang.
+Description:
+    rtc still does not work.
+Solution:
+    After examining the tutorial web on wiki and comparing it with my code. I fould that I messed up the 
+    port and data. In the "outb" provided to us, first parameter is data and second is port. I just mess 
+    them up and fails. As a solution, I change the order.
+
+    It takes me 3 hours to find and solve it.
+
+
+
+
+
+<--------------------------------------------------------->
+                            BUG 4                          
+<--------------------------------------------------------->
+Time:
+    2022.10.16.
+Creator:
+    Benlu Wang.
+Description:
+    SCREEN is not alternating in RTC test.
+Solution:
+    It's a strange question because there are lots of "!" on screen which means interrupt is received but it's not
+    alternating which means maybe only 1 interrupt is received. after checking the Wikipedia, I found that I need 
+    to let interrupt handler read port C everytime receiving a interrupt otherwise interrupt will not send again.
+    so I add "outb(RTC_REG_C, RTC_PORT);" and "inb(RTC_CMOS_PORT);" to solve the question
+
+    IDK what kind of error it is. But it takes me 4 hours to solve it. 
+    
+
+<--------------------------------------------------------->
+                          BUG 5                          
+<--------------------------------------------------------->
+Time:
+    2022.10.17.
+Creator:
+    Zhenyu Zhang.
+Description:
+    When typing using keyboard, "page fault" error would always occur.
+Solution:
+    In interrupt.S, After pushing parameter into stack, I forgot to "pop/add $4 %esp". So I mess up the stack. And also
+    mess up the following pop operations. Afrer I add "addl $4, %esp". Everything goes well.
+
+
+<=========================================================>
+<=================>    BUG LOG HEADER   <=================>
+<=========================================================>
+Assignment:
+    MP3
+CheckPoint:
+    CP2
+CreateTime:
+    2022.10.22
+Members: Zhenyu Zhang, Zhuohao Li, Weijie Liang, Benlu Wang
+
+
+
+
+
+<--------------------------------------------------------->
+                          BUG 6                          
+<--------------------------------------------------------->
+Time:
+    2022.10.22.
+Creator:
+    Benlu Wang.
+Description:
+    wrong return value for rtc_write.
+Solution:
+    After testing, I found the return value of rtc_write is not the byte written in but always 0. After examine the code I found 
+    that I mess up the return statement. It should be return "nbytes". and problem solved.
+
+
+<--------------------------------------------------------->
+                          BUG 7                           
+<--------------------------------------------------------->
+Time:
+    2022.10.23.
+Creator:
+    Benlu Wang.
+Description:
+    This problem did not show up when testing, it's discovered by my teammates when reading the code. It's dead lock
+Solution:
+    In function rtc_write, I used a spin lock to protect the flag variable indicating whether there's an interrupt now. However, I put 
+    the whole "while()" statement into the spinlock area which will lead to a deadlock if flag is not available. To solve this, I change 
+    to "do while()" statement and put "while" out of the lock area, which solves the problem.
+
+
+<--------------------------------------------------------->
+                          BUG 8                           
+<--------------------------------------------------------->
+Time:
+    2022.10.23.
+Creator:
+    Weijie Liang. 
+Description:
+    I restrict the maximal characters typed in terminal (128) but it didn't work
+Solution:
+    There's an error in an if expression. I replaced <= with <. 
+
+
+<--------------------------------------------------------->
+                        BUG 9                           
+<--------------------------------------------------------->
+Time:
+    2022.10.22.
+Creator:
+    Zhenyu Zhang
+Description:
+    When I read the file "frame0.txt". The screen only shows many garbage numbers. That's not normal because it's not an exefile.
+Solution:
+    The reason is that after I create the buffer to store the data read by "read_data" , I didn't initialize the buffer which means clear the 
+    buffer. So this buffer has a lot of the original bytes in the memory. 
+    After I clear the buffer, the screen shows correctly.
+
+<--------------------------------------------------------->
+                        BUG 10                           
+<--------------------------------------------------------->
+Time:
+    2022.10.22.
+Creator:
+    Zhenyu Zhang
+Description:
+    When I read the file "ls". The screen only shows the first few bytes like "ELF". But the file's size is large than 5000. It is obviously  not normal
+Solution:
+    The reason is that I use the "printf" to print the data in the file. This function will stop at the null bytes. So after the first null byte, "printf"
+    stop working. The solution is to use the function "putc". This function could print any character.
+
+<--------------------------------------------------------->
+                        BUG  11                         
+<--------------------------------------------------------->
+Time:
+    2022.10.22.
+Creator:
+    Zhenyu Zhang
+Description:
+    When I read the file "ls". The screen only shows the first few bytes like "ELF". But the file's size is large than 5000. It is obviously  not normal.
+Then I change my logic. I used the func "strlen" to calculate the length of the file and then use the putc to print char one by one. But it still doesn't work.
+Solution:
+    The reason is that the func "strlen" still stop at the null byte which is same with the "printf". 
+    The solution is use the function "putc" to print the whole buffer.
+
+<--------------------------------------------------------->
+                        BUG 12                          
+<--------------------------------------------------------->
+Time:
+    2022.10.23.
+Creator:
+    Zhuohao Li
+Description:
+    When I read the file "ls". The screen only shows the last sentence "123456789abcdefghijklmnopqrstuvwxyz"
+Solution:
+    Firstly I think it's should be the bug of the "screen_putc", one of our group's own functions changed from "putc"
+    But after test, I found that "screen_putc" could work perfectly. So there must be some other reasons. Then I screen_putc
+    the character in the "ls" file one by one. I found that there are too many null bytes in this file. So I add a "if" condition
+    to filter the null bytes. Finally, the screen shows correctly.
+
+
+<--------------------------------------------------------->
+                        BUG  13                         
+<--------------------------------------------------------->
+Time:
+    2022.10.23.
+Creator:
+    Zhuohao Li
+Description:
+    When I list all files, there is a ghost face at the end of "verylargetextwithverylongname.tx(ghost face)"
+Solution:
+    The reason is that this dentry's file name is large than 32 bytes. So if I printf dentry.file_name directly. It's not a null-terminated string so 
+    printf will not stop until all characters in this field is printed. Therefore, I create a 33 size buffer and set the last byte is 0. And only print
+    first 32 bytes of the file_name. In this case, printf will stop at the end of this buffer. The ghost face disappear.
+
+<--------------------------------------------------------->
+                        BUG 14                          
+<--------------------------------------------------------->
+Time:
+    2022.10.23.
+Creator:
+    Zhuohao Li
+Description:
+    When I use the function: read_file_by_name  to read the file "verylargetextwithverylongname.txt". The screen shows nothing. It's right because
+    this name is too long and is illegal. But when I type "verylargetextwithverylongname.tx", the screen still shows nothing. That's not normal.
+Solution:
+    This is because in the func: read_dentry_by_name, I use the "strcmp" to compare the dentry.file_name and the input fname. That means, 
+    I compare the whole dentry.file_name with the input. However, the dentry.file_name is a too long and illegal name. So I should just compare the
+    first 32 bytes of the dentry.file_name. I should use "strncmp".
+
+
+
+
+
+
+
+<=========================================================>
+<=================>    BUG LOG HEADER   <=================>
+<=========================================================>
+Assignment:
+    MP3
+CheckPoint:
+    CP3
+CreateTime:
+    2022.11.04
+Members: Zhenyu Zhang, Zhuohao Li, Weijie Liang, Benlu Wang
+
+
+<--------------------------------------------------------->
+                          BUG 15                          
+<--------------------------------------------------------->
+Time:
+    2022.11.04.
+Creator:
+     Benlu Wang
+Description:
+    program gets stuck at the function get_process_cmd.
+Solution:
+    Since there are whiles in the function, so I believe it goes into infinite loop somewhere. After I set breakpoint and run func 
+    step by step. I found that when the character in command is ' ', I forget to increase the value of command_index. So I add 
+    "if(command[command_index] == ' '){  
+            command_index++;
+    }"
+    Which solves the problem.
+    It takes me about half an hour to solve the problem, and I think it's like an logical error.
+
+
+
+<--------------------------------------------------------->
+                          BUG 16                          
+<--------------------------------------------------------->
+Time:
+    2022.11.05.
+Creator:
+    Benlu Wang.
+Description:
+    get_process_cmd func does not correctly handle the input command into cmd and argv. cmd and argv can not be used by 
+    other functions.
+Solution:
+    I found the result of strlen() and other string function is wrong if using the cmd and argv. Reminded by my teammates,
+    I forgot to add '\0' at the end of cmd and argv, which indicates the end position of a string. So no wonder cmd and argv
+    does not work. I simply added " cmd[cmd_index] = '\0'; argv[arg_index] = '\0';" to solve the problem.
+    It takes me about 2 hours to solve the problem, and I think it's like an logical error.
+
+
+
+<--------------------------------------------------------->
+    BUG 17                          
+<--------------------------------------------------------->
+Time:
+2022.11.5.
+Creator:
+Weiji Liang
+Description:
+When I use backspace to delete a char, it does delete a char on the screen but doesn't actually delete in the rad buffer and the command will still 
+work. 
+I delete char on terminal buffer, which is what to show but forget to delete it on keyboard read buffer
+
+
+<--------------------------------------------------------->
+    BUG 18                          
+<--------------------------------------------------------->
+Time:
+2022.11.5.
+Creator:
+Weiji Liang
+Description:
+The return value of the shell doesn't has '\n' and 301OS> wont' show at a new line
+The return value of keyboard_read is number of bytes read. I forget to add 1 to the return value
+
+<--------------------------------------------------------->
+                          BUG 19                          
+<--------------------------------------------------------->
+Time:
+    2022.11.05.
+Creator:
+    Zhenyu Zhang.
+Description:
+    execute generate page fault
+Solution:
+    This problem is easy to solve, which takes about 10 min to fix it. inside the function set_virtual_memory, I wrongly test the argument, it should be pcb_pos >= MAX_PROCESS_NUM, but I write pcb_pos < MAX_PROCESS_NUM for fault. So I change to pcb_pos >= MAX_PROCESS_NUM to fix it.
+
+<--------------------------------------------------------->
+                          BUG 20                          
+<--------------------------------------------------------->
+Time:
+    2022.11.05.
+Creator:
+    Zhenyu Zhang.
+Description:
+    execute can not store the parent ebp, and generate page fault after fix the set_virtual_memory problem.
+Solution:
+    When try to store the esp and ebp in parent PCB, it generate page fault. This problem takes about 15 min to fix. It is caused by wrongly judge the parent. if the current pid == 0, means that it is the first shell and it do not have parent process. So we need to add an if to judge. if pcb == 0, we set the parent to NULL, and needn't to store the parent's esp and ebp. We add these to fix the problem.
+
+<--------------------------------------------------------->
+                          BUG 21                          
+<--------------------------------------------------------->
+Time:
+    2022.11.06.
+Creator:
+    Zhenyu Zhang.
+Description:
+    halt generate wrong return value.
+Solution:
+    We found that the halt jmp to execute, and execute always return 0. It is a wrong situation. We takes about 15 min to fix it. I use a global variable to store the status value of halt, and in the end of execute, if the status is the status of exception, return 256, else just return status.
+
+
+
+
+
+<=========================================================>
+<=================>    BUG LOG HEADER   <=================>
+<=========================================================>
+Assignment:
+    MP5
+CheckPoint:
+    CP4
+CreateTime:
+    2022.11.11
+
+<--------------------------------------------------------->
+                          BUG 22                          
+<--------------------------------------------------------->
+Time:
+    2022.11.14.
+Creator:
+    Benlu Wang.
+Description:
+    Forget to check starting memory address in sys_vidmap function.
+Solution:
+    According to the requirements of pdf, I need to check if the address falls in 
+    one 4 MB page. So I add "if(!((uint32_t)screen_start>VALUE_128MB && (uint32_t)screen_start<VALUE_132MB)) return -1;"
+    to judge its range
+
+
+<--------------------------------------------------------->
+                          BUG 23                          
+<--------------------------------------------------------->
+Time:
+    2022.11.14.
+Creator:
+    Benlu Wang.
+Description:
+    Wrong return value for sys_getarg.
+Solution:
+    According to the requirements of pdf,. If there are no arguments, or if the arguments and a terminal NULL (0-byte) do not fit 
+    in the buffer, simply return -1, we do not check this before. and We add the judgement to return -1.
+
+
+<--------------------------------------------------------->
+                          BUG 24                          
+<--------------------------------------------------------->
+Time:
+    2022.11.14.
+Creator:
+    Weijie Liang.
+Description:
+    Wrong return value for keyboard write and doesn't pass the error test
+Solution:
+    Return -1 instead of 0, -1 means cannot call keyboard write

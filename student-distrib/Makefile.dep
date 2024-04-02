@@ -1,0 +1,181 @@
+boot.o: boot.S multiboot.h x86_desc.h types.h
+exception_link.o: exception_link.S
+interrupt_link.o: interrupt_link.S
+syscall_link.o: syscall_link.S x86_desc.h types.h
+x86_desc.o: x86_desc.S x86_desc.h types.h
+exception.o: exception.c exception.h interrupt.h spinlock.h i8259.h \
+  types.h lib.h syscall.h paging.h text_terminal.h keyboard.h \
+  GUI/window.h GUI/../lib.h GUI/screen.h GUI/gui_color.h terminal.h \
+  signal.h process.h x86_desc.h filesys.h rtc.h
+filesys.o: filesys.c lib.h types.h filesys.h rtc.h spinlock.h process.h \
+  x86_desc.h syscall.h paging.h text_terminal.h keyboard.h GUI/window.h \
+  GUI/../lib.h GUI/screen.h GUI/gui_color.h terminal.h signal.h \
+  interrupt.h i8259.h complie_flags.h
+i8259.o: i8259.c i8259.h types.h lib.h
+idt.o: idt.c idt.h x86_desc.h types.h exception.h interrupt.h spinlock.h \
+  i8259.h lib.h
+interrupt.o: interrupt.c interrupt.h spinlock.h i8259.h types.h lib.h \
+  signal.h process.h x86_desc.h filesys.h rtc.h syscall.h paging.h \
+  text_terminal.h keyboard.h GUI/window.h GUI/../lib.h GUI/screen.h \
+  GUI/gui_color.h terminal.h
+kernel.o: kernel.c multiboot.h types.h x86_desc.h lib.h i8259.h debug.h \
+  tests.h rtc.h spinlock.h filesys.h paging.h text_terminal.h keyboard.h \
+  GUI/window.h GUI/../lib.h GUI/screen.h GUI/gui_color.h terminal.h \
+  syscall.h GUI/gui.h GUI/window.h GUI/../process.h GUI/../x86_desc.h \
+  GUI/../lib.h GUI/../filesys.h GUI/../syscall.h GUI/../text_terminal.h \
+  GUI/../GUI/window.h GUI/../terminal.h GUI/../signal.h \
+  GUI/../interrupt.h GUI/../spinlock.h GUI/../i8259.h GUI/mouse.h \
+  GUI/../lib.h GUI/mouse.h pit.h complie_flags.h memoryalloc/malloc.h \
+  memoryalloc/../lib.h disk/ata.h disk/../lib.h disk/disk_filesys.h \
+  disk/../filesys.h
+keyboard.o: keyboard.c process.h x86_desc.h types.h lib.h filesys.h rtc.h \
+  spinlock.h syscall.h paging.h text_terminal.h keyboard.h GUI/window.h \
+  GUI/../lib.h GUI/screen.h GUI/gui_color.h terminal.h signal.h \
+  interrupt.h i8259.h scheduling.h complie_flags.h GUI/window.h GUI/gui.h \
+  GUI/window.h GUI/../process.h GUI/mouse.h GUI/../lib.h GUI/gui_screen.h \
+  GUI/screen.h GUI/gui_color.h
+lib.o: lib.c lib.h types.h
+paging.o: paging.c paging.h lib.h types.h text_terminal.h keyboard.h \
+  spinlock.h GUI/window.h GUI/../lib.h GUI/screen.h GUI/gui_color.h \
+  terminal.h process.h x86_desc.h filesys.h rtc.h syscall.h signal.h \
+  interrupt.h i8259.h
+pit.o: pit.c pit.h lib.h types.h interrupt.h spinlock.h i8259.h \
+  scheduling.h process.h x86_desc.h filesys.h rtc.h syscall.h paging.h \
+  text_terminal.h keyboard.h GUI/window.h GUI/../lib.h GUI/screen.h \
+  GUI/gui_color.h terminal.h signal.h complie_flags.h
+process.o: process.c process.h x86_desc.h types.h lib.h filesys.h rtc.h \
+  spinlock.h syscall.h paging.h text_terminal.h keyboard.h GUI/window.h \
+  GUI/../lib.h GUI/screen.h GUI/gui_color.h terminal.h signal.h \
+  interrupt.h i8259.h
+rtc.o: rtc.c rtc.h lib.h types.h spinlock.h filesys.h interrupt.h i8259.h \
+  text_terminal.h keyboard.h GUI/window.h GUI/../lib.h GUI/screen.h \
+  GUI/gui_color.h terminal.h paging.h signal.h process.h x86_desc.h \
+  syscall.h
+scheduling.o: scheduling.c scheduling.h lib.h types.h process.h \
+  x86_desc.h filesys.h rtc.h spinlock.h syscall.h paging.h \
+  text_terminal.h keyboard.h GUI/window.h GUI/../lib.h GUI/screen.h \
+  GUI/gui_color.h terminal.h signal.h interrupt.h i8259.h complie_flags.h \
+  pit.h
+signal.o: signal.c process.h x86_desc.h types.h lib.h filesys.h rtc.h \
+  spinlock.h syscall.h paging.h text_terminal.h keyboard.h GUI/window.h \
+  GUI/../lib.h GUI/screen.h GUI/gui_color.h terminal.h signal.h \
+  interrupt.h i8259.h exception.h scheduling.h complie_flags.h
+spinlock.o: spinlock.c spinlock.h
+syscall.o: syscall.c syscall.h lib.h types.h paging.h text_terminal.h \
+  keyboard.h spinlock.h GUI/window.h GUI/../lib.h GUI/screen.h \
+  GUI/gui_color.h terminal.h process.h x86_desc.h filesys.h rtc.h \
+  signal.h interrupt.h i8259.h exception.h GUI/window.h GUI/mouse.h \
+  GUI/../lib.h device/sound.h device/../lib.h GUI/gui.h GUI/window.h \
+  GUI/../process.h GUI/mouse.h scheduling.h complie_flags.h \
+  memoryalloc/malloc.h memoryalloc/../lib.h disk/disk_filesys.h \
+  disk/../lib.h disk/../filesys.h disk/ata.h disk/../lib.h
+terminal.o: terminal.c terminal.h lib.h types.h keyboard.h spinlock.h \
+  GUI/gui_terminal.h GUI/../terminal.h GUI/screen.h GUI/../lib.h \
+  GUI/gui_color.h text_terminal.h GUI/window.h paging.h process.h \
+  x86_desc.h filesys.h rtc.h syscall.h signal.h interrupt.h i8259.h \
+  scheduling.h complie_flags.h
+tests.o: tests.c tests.h x86_desc.h types.h lib.h rtc.h spinlock.h \
+  filesys.h keyboard.h i8259.h interrupt.h paging.h text_terminal.h \
+  GUI/window.h GUI/../lib.h GUI/screen.h GUI/gui_color.h terminal.h \
+  syscall.h process.h signal.h GUI/screen.h GUI/window.h GUI/mouse.h \
+  GUI/../lib.h GUI/gui.h GUI/window.h GUI/../process.h GUI/mouse.h pit.h \
+  disk/ata.h disk/../lib.h disk/disk_filesys.h disk/../filesys.h
+text_terminal.o: text_terminal.c keyboard.h lib.h types.h spinlock.h \
+  text_terminal.h GUI/window.h GUI/../lib.h GUI/screen.h GUI/gui_color.h \
+  terminal.h paging.h process.h x86_desc.h filesys.h rtc.h syscall.h \
+  signal.h interrupt.h i8259.h
+sound.o: device/sound.c device/sound.h device/../lib.h device/../types.h \
+  device/../terminal.h device/../lib.h device/../keyboard.h \
+  device/../spinlock.h device/../rtc.h device/../filesys.h \
+  device/../rtc.h
+ata.o: disk/ata.c disk/ata.h disk/../lib.h disk/../types.h \
+  disk/../terminal.h disk/../lib.h disk/../keyboard.h disk/../spinlock.h \
+  disk/../interrupt.h disk/../i8259.h
+disk_filesys.o: disk/disk_filesys.c disk/disk_filesys.h disk/../lib.h \
+  disk/../types.h disk/../filesys.h disk/../lib.h disk/../rtc.h \
+  disk/../spinlock.h disk/../filesys.h disk/ata.h disk/../process.h \
+  disk/../x86_desc.h disk/../syscall.h disk/../paging.h \
+  disk/../text_terminal.h disk/../keyboard.h disk/../GUI/window.h \
+  disk/../GUI/../lib.h disk/../GUI/screen.h disk/../GUI/gui_color.h \
+  disk/../terminal.h disk/../signal.h disk/../interrupt.h disk/../i8259.h
+gui.o: GUI/gui.c GUI/gui.h GUI/window.h GUI/../lib.h GUI/../types.h \
+  GUI/screen.h GUI/gui_color.h GUI/../process.h GUI/../x86_desc.h \
+  GUI/../lib.h GUI/../filesys.h GUI/../rtc.h GUI/../spinlock.h \
+  GUI/../syscall.h GUI/../paging.h GUI/../text_terminal.h \
+  GUI/../keyboard.h GUI/../GUI/window.h GUI/../terminal.h GUI/../signal.h \
+  GUI/../interrupt.h GUI/../i8259.h GUI/mouse.h GUI/../syscall.h \
+  GUI/../scheduling.h GUI/../process.h GUI/../complie_flags.h \
+  GUI/gui_screen.h GUI/gui_interaction.h
+gui_color.o: GUI/gui_color.c GUI/gui_color.h GUI/screen.h GUI/../lib.h \
+  GUI/../types.h
+gui_interaction.o: GUI/gui_interaction.c GUI/gui_interaction.h \
+  GUI/gui_screen.h GUI/screen.h GUI/../lib.h GUI/../types.h GUI/window.h \
+  GUI/gui_color.h GUI/gui.h GUI/../process.h GUI/../x86_desc.h \
+  GUI/../lib.h GUI/../filesys.h GUI/../rtc.h GUI/../spinlock.h \
+  GUI/../syscall.h GUI/../paging.h GUI/../text_terminal.h \
+  GUI/../keyboard.h GUI/../GUI/window.h GUI/../terminal.h GUI/../signal.h \
+  GUI/../interrupt.h GUI/../i8259.h GUI/mouse.h
+gui_screen.o: GUI/gui_screen.c GUI/gui_screen.h GUI/screen.h GUI/../lib.h \
+  GUI/../types.h GUI/window.h GUI/gui_color.h GUI/mouse.h GUI/gui.h \
+  GUI/../process.h GUI/../x86_desc.h GUI/../lib.h GUI/../filesys.h \
+  GUI/../rtc.h GUI/../spinlock.h GUI/../syscall.h GUI/../paging.h \
+  GUI/../text_terminal.h GUI/../keyboard.h GUI/../GUI/window.h \
+  GUI/../terminal.h GUI/../signal.h GUI/../interrupt.h GUI/../i8259.h
+gui_terminal.o: GUI/gui_terminal.c GUI/gui_terminal.h GUI/../terminal.h \
+  GUI/../lib.h GUI/../types.h GUI/../keyboard.h GUI/../spinlock.h \
+  GUI/screen.h GUI/../lib.h GUI/gui_color.h GUI/../process.h \
+  GUI/../x86_desc.h GUI/../filesys.h GUI/../rtc.h GUI/../syscall.h \
+  GUI/../paging.h GUI/../text_terminal.h GUI/../GUI/window.h \
+  GUI/../GUI/../lib.h GUI/../GUI/screen.h GUI/../GUI/gui_color.h \
+  GUI/../terminal.h GUI/../signal.h GUI/../interrupt.h GUI/../i8259.h \
+  GUI/gui_screen.h GUI/window.h
+mouse.o: GUI/mouse.c GUI/mouse.h GUI/../lib.h GUI/../types.h \
+  GUI/../interrupt.h GUI/../spinlock.h GUI/../i8259.h GUI/../lib.h \
+  GUI/../terminal.h GUI/../keyboard.h GUI/screen.h GUI/gui.h GUI/window.h \
+  GUI/gui_color.h GUI/../process.h GUI/../x86_desc.h GUI/../filesys.h \
+  GUI/../rtc.h GUI/../syscall.h GUI/../paging.h GUI/../text_terminal.h \
+  GUI/../GUI/window.h GUI/../terminal.h GUI/../signal.h \
+  GUI/../interrupt.h
+screen.o: GUI/screen.c GUI/../lib.h GUI/../types.h GUI/screen.h \
+  GUI/../text_terminal.h GUI/../keyboard.h GUI/../lib.h GUI/../spinlock.h \
+  GUI/../GUI/window.h GUI/../GUI/../lib.h GUI/../GUI/screen.h \
+  GUI/../GUI/gui_color.h GUI/../terminal.h GUI/../paging.h \
+  GUI/../text_terminal.h
+window.o: GUI/window.c GUI/window.h GUI/../lib.h GUI/../types.h \
+  GUI/screen.h GUI/gui_color.h GUI/../process.h GUI/../x86_desc.h \
+  GUI/../lib.h GUI/../filesys.h GUI/../rtc.h GUI/../spinlock.h \
+  GUI/../syscall.h GUI/../paging.h GUI/../text_terminal.h \
+  GUI/../keyboard.h GUI/../GUI/window.h GUI/../terminal.h GUI/../signal.h \
+  GUI/../interrupt.h GUI/../i8259.h GUI/mouse.h GUI/gui.h \
+  GUI/../text_terminal.h GUI/gui_screen.h
+buddy.o: memoryalloc/buddy.c memoryalloc/buddy.h memoryalloc/../lib.h \
+  memoryalloc/../types.h memoryalloc/../process.h \
+  memoryalloc/../x86_desc.h memoryalloc/../lib.h memoryalloc/../filesys.h \
+  memoryalloc/../rtc.h memoryalloc/../spinlock.h memoryalloc/../syscall.h \
+  memoryalloc/../paging.h memoryalloc/../text_terminal.h \
+  memoryalloc/../keyboard.h memoryalloc/../GUI/window.h \
+  memoryalloc/../GUI/../lib.h memoryalloc/../GUI/screen.h \
+  memoryalloc/../GUI/gui_color.h memoryalloc/../terminal.h \
+  memoryalloc/../signal.h memoryalloc/../interrupt.h \
+  memoryalloc/../i8259.h memoryalloc/../paging.h \
+  memoryalloc/../terminal.h
+malloc.o: memoryalloc/malloc.c memoryalloc/malloc.h memoryalloc/../lib.h \
+  memoryalloc/../types.h memoryalloc/slab.h memoryalloc/buddy.h \
+  memoryalloc/../process.h memoryalloc/../x86_desc.h memoryalloc/../lib.h \
+  memoryalloc/../filesys.h memoryalloc/../rtc.h memoryalloc/../spinlock.h \
+  memoryalloc/../syscall.h memoryalloc/../paging.h \
+  memoryalloc/../text_terminal.h memoryalloc/../keyboard.h \
+  memoryalloc/../GUI/window.h memoryalloc/../GUI/../lib.h \
+  memoryalloc/../GUI/screen.h memoryalloc/../GUI/gui_color.h \
+  memoryalloc/../terminal.h memoryalloc/../signal.h \
+  memoryalloc/../interrupt.h memoryalloc/../i8259.h
+slab.o: memoryalloc/slab.c memoryalloc/slab.h memoryalloc/../lib.h \
+  memoryalloc/../types.h memoryalloc/buddy.h memoryalloc/../process.h \
+  memoryalloc/../x86_desc.h memoryalloc/../lib.h memoryalloc/../filesys.h \
+  memoryalloc/../rtc.h memoryalloc/../spinlock.h memoryalloc/../syscall.h \
+  memoryalloc/../paging.h memoryalloc/../text_terminal.h \
+  memoryalloc/../keyboard.h memoryalloc/../GUI/window.h \
+  memoryalloc/../GUI/../lib.h memoryalloc/../GUI/screen.h \
+  memoryalloc/../GUI/gui_color.h memoryalloc/../terminal.h \
+  memoryalloc/../signal.h memoryalloc/../interrupt.h \
+  memoryalloc/../i8259.h memoryalloc/../paging.h

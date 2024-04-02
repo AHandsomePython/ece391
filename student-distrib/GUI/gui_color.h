@@ -1,0 +1,31 @@
+#ifndef GUI_COLOR_H
+#define GUI_COLOR_H
+
+// enum COLOR{
+//     TERMINAL_COLOR = 0x03,
+//     TERMINAL_TEXT_COLOR = 0x3C,
+//     WINDOW_BAR_COLOR = 30,
+//     WINDOW_TEXT_COLOR = 5,
+//     STATUS_BAR_COLOR = 0x01,
+//     STATUS_BAR_TEXT_COLOR = 0x03,
+//     BUTTON1_COLOR = 0x0A,
+//     BUTTON2_COLOR = 0x06,
+//     BUTTON3_COLOR = 0x30,
+// };
+
+enum COLOR{
+    TERMINAL_COLOR = 64,
+    TERMINAL_TEXT_COLOR = 65,
+    WINDOW_BAR_COLOR = 66,
+    WINDOW_TEXT_COLOR = 67,
+    STATUS_BAR_COLOR = 68,
+    STATUS_BAR_TEXT_COLOR = 69,
+    BUTTON1_COLOR = 70,
+    BUTTON2_COLOR = 71,
+    BUTTON3_COLOR = 72,
+};
+
+int GUI_color_init();
+int GUI_color_reset();
+
+#endif
