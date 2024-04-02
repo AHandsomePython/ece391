@@ -1,70 +1,173 @@
-ACADEMIC INTEGRITY
------
-Please review the University of Illinois Student Code before starting,
-particularly all subsections of Article 1, Part 4 Academic Integrity and Procedure [here](http://studentcode.illinois.edu/article1_part4_1-401.html).
+# Extra Credit
 
-**§ 1‑402 Academic Integrity Infractions**
+## Part 1. GUI
+### 1. ModeX Screen Support (GUI/screen.c, GUI/gui_screen.c)
+-  **Automatic double buffer** management for image buffering **without explicit operation**
 
-(a).	Cheating. No student shall use or attempt to use in any academic exercise materials, information, study aids, or electronic data that the student knows or should know is unauthorized. Instructors are strongly encouraged to make in advance a clear statement of their policies and procedures concerning the use of shared study aids, examination files, and related materials and forms of assistance. Such advance notification is especially important in the case of take-home examinations. During any examination, students should assume that external assistance (e.g., books, notes, calculators, and communications with others) is prohibited unless specifically authorized by the Instructor. A violation of this section includes but is not limited to:
-
-(1)	Allowing others to conduct research or prepare any work for a student without prior authorization from the Instructor, including using the services of commercial term paper companies. 
-
-(2)	Submitting substantial portions of the same academic work for credit more than once or by more than one student without authorization from the Instructors to whom the work is being submitted. 
-
-(3) Working with another person without authorization to satisfy an individual assignment.
-
-(b) Plagiarism. No student shall represent the words, work, or ideas of another as his or her own in any academic endeavor. A violation of this section includes but is not limited to:
-
-(1)	Copying: Submitting the work of another as one’s own. 
-
-(2)	Direct Quotation: Every direct quotation must be identified by quotation marks or by appropriate indentation and must be promptly cited. Proper citation style for many academic departments is outlined in such manuals as the MLA Handbook or K.L. Turabian’s A Manual for Writers of Term Papers, Theses and Dissertations. These and similar publications are available in the University bookstore or library. The actual source from which cited information was obtained should be acknowledged.
-
-(3)	Paraphrase: Prompt acknowledgment is required when material from another source is paraphrased or summarized in whole or in part. This is true even if the student’s words differ substantially from those of the source. A citation acknowledging only a directly quoted statement does not suffice as an acknowledgment of any preceding or succeeding paraphrased material. 
-
-(4)	Borrowed Facts or Information: Information obtained in one’s reading or research that is not common knowledge must be acknowledged. Examples of common knowledge might include the names of leaders of prominent nations, basic scientific laws, etc. Materials that contribute only to one’s general understanding of the subject may be acknowledged in a bibliography and need not be immediately cited. One citation is usually sufficient to acknowledge indebtedness when a number of connected sentences in the paper draw their special information from one source.
-
-(c) Fabrication. No student shall falsify or invent any information or citation in an academic endeavor. A violation of this section includes but is not limited to:
-
-(1)	Using invented information in any laboratory experiment or other academic endeavor without notice to and authorization from the Instructor or examiner. It would be improper, for example, to analyze one sample in an experiment and covertly invent data based on that single experiment for several more required analyses. 
-
-(2)	Altering the answers given for an exam after the examination has been graded. 
-
-(3)	Providing false or misleading information for the purpose of gaining an academic advantage.
-
-(d)	Facilitating Infractions of Academic Integrity. No student shall help or attempt to help another to commit an infraction of academic integrity, where one knows or should know that through one’s acts or omissions such an infraction may be facilitated. A violation of this section includes but is not limited to:
-
-(1)	Allowing another to copy from one’s work. 
-
-(2)	Taking an exam by proxy for someone else. This is an infraction of academic integrity on the part of both the student enrolled in the course and the proxy or substitute. 
-
-(3)	Removing an examination or quiz from a classroom, faculty office, or other facility without authorization.
-
-(e)	Bribes, Favors, and Threats. No student shall bribe or attempt to bribe, promise favors to or make threats against any person with the intent to affect a record of a grade or evaluation of academic performance. This includes conspiracy with another person who then takes the action on behalf of the student.
-
-(f)	Academic Interference. No student shall tamper with, alter, circumvent, or destroy any educational material or resource in a manner that deprives any other student of fair access or reasonable use of that material or resource. 
-
-(1)	Educational resources include but are not limited to computer facilities, electronic data, required/reserved readings, reference works, or other library materials. 
-
-(2)	Academic interference also includes acts in which the student committing the infraction personally benefits from the interference, regardless of the effect on other students.
+-  **Unified** screen operation interface  
 
 
-LEGAL
------
-Permission to use, copy, modify, and distribute this software and its
-documentation for any purpose, without fee, and without written agreement is
-hereby granted, provided that the above copyright notice and the following
-two paragraphs appear in all copies of this software.
 
-IN NO EVENT SHALL THE AUTHOR OR THE UNIVERSITY OF ILLINOIS BE LIABLE TO
-ANY PARTY FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL
-DAMAGES ARISING OUT  OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION,
-EVEN IF THE AUTHOR AND/OR THE UNIVERSITY OF ILLINOIS HAS BEEN ADVISED
-OF THE POSSIBILITY OF SUCH DAMAGE.
+### 2. Window Support (GUI/window.c, GUI/gui.c)
+- **Virtualization** of the window. The user state needn't know any information about the size and position of the window, and from the user's view, **each process seems to have the entire screen**  
 
-THE AUTHOR AND THE UNIVERSITY OF ILLINOIS SPECIFICALLY DISCLAIM ANY
-WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.  THE SOFTWARE
+- **Multiple windows support** (on the same screen).  Supports displaying any number of windows simultaneously  
 
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND NEITHER THE AUTHOR NOR
-THE UNIVERSITY OF ILLINOIS HAS ANY OBLIGATION TO PROVIDE MAINTENANCE,
-SUPPORT, UPDATES, ENHANCEMENTS, OR MODIFICATIONS."
+-  Management and display of **multi-window overlapping** relationships (multi-layer management)  
+
+- Support for **screen pre-rendering** to save computational resources (dynamically buffers the underlying window image)  
+
+- Window support for **mouse-based movement, zooming, switching, full screen, minimizing**  
+
+- Support mouse-based **front-end scheduling**. Window scheduling can cooperate with the scheduler for front-end process switching  
+
+- Provides a **flexible system call interface** for users to draw windows   
+
+
+
+### 3. GUI Terminal Support (GUI/gui_terminal.c)
+- Through the unified terminal function predefined interface, we can **quickly switch between text terminal and GUI terminal** without modifying other code   
+
+- **Each terminal has its own window**, and like other types of window applications, terminal also supports the operations supported by the window, as well as mouse-based pre-stage scheduling
+
+- **GUI and text terminal share the same set of system call interfaces**, easy to maintain and extend
+
+
+
+### 4. Widget Support (GUI/gui_interaction.c)
+- Provides a **general interface** to the widget
+
+- Support **automatic capture and processing of widget activities**   
+
+- Support **multi-level widget nesting** 
+
+- **System-level menus** are implemented based on widgets (including the start menu, palette interface, color picker, right-click menu, etc.) 
+
+
+
+### 5. Dynamic Color Settings and Palette Settings (GUI/gui_color.c, GUI/gui_interaction.c)
+
+-  Support **dynamic color palette** change  
+
+-  Support **dynamic adjustment** of **system component colors**
+
+
+
+### 6. User interaction support (GUI/gui.c, GUI/gui_interaction.c)
+-  Support mouse-based **graphical interaction**, including **movement**, **widget triggering**, **swiping**, **taskbar**, etc.
+
+
+
+## Part 2. Memory Management
+### 1. Overall Structure
+- The system's memory management implements a **three-level structure**. The physical memory management is based on **Buddy System** to **reduce ** **external fragmentation**. The **Slab Cache**, an object-based allocation cache, is built on top of the Buddy System for **fast allocation and release** of  objects of the same size. A **kmalloc** **allocator** is built on the Slab layer to **allocate memory of arbitrary size**.
+
+
+
+### 2. Buddy system-based physical memory management  (memoryalloc/buddy.c)
+
+- **Reduce external fragmentation** by using the Buddy System for physical memory management. The Buddy System also implements a **contiguous page allocator.**
+
+
+
+### 3. Slab Cache (memoryalloc/slab.c)
+- Using **Slab Cache** for object management and creating a buffer pool for fixed-length sizes can **greatly reduce the number of page mappings**
+
+
+
+### 4. kmalloc (memoryalloc/malloc.c)
+- **kmalloc allocator** is created on Slab Cache **for small and medium-sized objects**
+
+
+
+### 5. User malloc (memoryalloc/malloc.c)
+-  Build on the above three systems to **implement user-state memory allocation**
+
+
+
+## Part 3. File System
+### 1.  ATA Disk Driver (disk/ata.c)
+
+- Support **ATA disk block sequential read/write**
+
+- Support to **obtain ATA information**, including spatial information, etc.  
+
+
+
+### 2. ATA Disk-Based Permanent Read/Write File System (disk/disk_filesys.c, syscall.c, filesys.c) 
+
+- **Multi-level directory support** and support for using the **parent directory** identifier "..." in the path and the **current directory** identifier "." 
+
+-  **Dynamic inode, datablock allocation**. Support for **bitmap** to provide fast finding of free blocks 
+
+-  Support **dynamic creation of files and directories**  
+
+-  Support **file writing** and dynamic expansion of data blocks  
+
+-  Support **superblock write-back to update file information**   
+
+-  Support for **disk formatting** 
+
+-  Support **Unified File Interface (VFS)**, coexisting and **compatible with the original** memory file system    
+
+-  This file system is mounted in a directory of the original memory file system 
+
+
+
+## Part 4. Signal
+### 1. Support all Signal Functions Requested by MP3 Doc (signal.c)
+
+- Support **user-defined Signal** behavior
+
+- Support **RTC to send ALARM signal** at regular intervals
+
+- Support keyboard to send **INTERRUPT signal** via **Ctrl+C** 
+
+
+
+### 2. Support User State Sending Signal to Other Processes(signal.c)
+
+-  Support this operation to **facilitate communication between multi-threaded programs**
+
+
+
+
+## Part 5. Multi-Thread Support
+### 1. Multi-Thread Support (scheduling.c)  
+
+-  Support **user-state** processes to **create threads** based on functions
+
+-  **Threads inherit the address space of the process and have a separate user stack**
+
+-  Support for running **multi-threaded programs** in user state (each process can create >= 1 thread) 
+
+-  Support **address space sharing** and **variable sharing**  
+
+-  Support user state process kill a thread 
+
+-  Threads also support Signal. Customizable Signal behavior for **thread communication and synchronization** 
+
+
+
+### 2. Sleep Support (scheduling.c)
+
+-  **Sleep and wake-up** support, tell the scheduler to hibernate and wake up through flag bit setting
+
+
+
+
+## Part 6. Devices
+### 1. Mouse (GUI/mouse.c)
+-  **Virtualization**. The mouse returns to the user the position inside the window. The movement of the window does not on the user state program
+
+
+
+### 2. Sound (device/sound.c)
+
+-  Support for making **individual note sounds**
+
+
+
+### 3. RTC (rtc.c)
+
+-  **Random number** generator
